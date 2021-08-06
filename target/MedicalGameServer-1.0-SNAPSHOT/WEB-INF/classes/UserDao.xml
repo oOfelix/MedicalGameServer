@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="example.dao.UserDao">
+    <select id="getUser" resultType="example.domain.User">
+        select userName,password from tb_user where userName = #{userName}
+    </select>
+    <insert id="addUser">
+        insert into tb_user(userName,password) values(#{userName},#{password})
+    </insert>
+    <insert id="addProgress">
+        insert into tb_progress(userName,points,status) values(#{userName},0,'')
+    </insert>
+    <update id="savePoints">
+        update tb_progress set points = #{points} where userName = #{userName}
+    </update>
+    <select id="getPoints">
+        select points from tb_progress where userName = #{userName}
+    </select>
+    <update id="saveStatus">
+        update tb_progress set status = #{status} where userName = #{userName}
+    </update>
+    <select id="getStatus" resultType="String">
+        select status from tb_progress where userName = #{userName}
+    </select>
+
+</mapper>

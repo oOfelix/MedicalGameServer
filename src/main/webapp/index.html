@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>测试页面</title>
+    <script src="./js/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<form action="">
+    UserName: <input type="text" id="us">
+    password: <input type="text" id="pw">
+    operationCode: <input type="text" name="" id="op">
+    ip: <input type="text" value="localhost" id="ip">
+    port: <input type="text" value="8080" id="port">
+    uri: <input type="text" value="OperationServlet" id="uri">
+    points: <input type="text" value="" id="points">
+    status: <input type="text" value="" id="status">
+    <input type="button" value="测试" id="btn" onclick="">
+</form>
+    <pre>
+    WebSocket: ws://42.193.4.130:8080/WebSocket
+    Http     : http://42.193.4.130:8080/OperationCode
+    Http     : http://101.34.9.187:8080/OperationCode
+    </pre>
+</body>
+<script>
+    $(function() {
+        $("#btn").click(() => {
+            let data = {
+                "userName":$('#us').val(),
+                "password":$('#pw').val(),
+                "operationCode":$('#op').val(),
+                "points":$('#points').val(),
+                "status":$('#status').val(),
+            }
+            let ip = $('#ip').val();
+            let port = $('#port').val();
+            let uri = $('#uri').val();
+            $.ajax({
+                type: "post",
+                url: "http://" + ip + ":"+ port +"/"+uri,
+                data: JSON.stringify(data),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (responseText) {
+                    window.console.log(responseText);
+                    alert("成功" + JSON.stringify(responseText));
+                },
+                error: function () {
+                    alert("数据丢失");
+                },
+            });
+        })
+    });
+</script>
+<script type="text/javascript">
+
+    function WebSocketTest(){
+        let data = {
+            "userName":$('#us').val(),
+            "password":$('#pw').val(),
+            "operationCode":$('#op').val(),
+        }
+        let ip = $('#ip').val();
+        let port = $('#port').val();
+        let uri = $('#uri').val();
+        let url = "ws://" + ip + ":" + port + "/" + uri;
+        let ws = new WebSocket(url);    // 打开一个 web socket
+        ws.onopen = function()
+        {
+            ws.send(JSON.stringify(data));    // Web Socket 已连接上，使用 send() 方法发送数据
+            alert("数据发送中...");
+        };
+
+        ws.onmessage = function (evt)
+        {
+            let received_msg = evt.data;
+            console.log(received_msg);
+            alert("数据已接收...");
+        };
+
+        ws.onclose = function()
+        {
+            alert("连接已关闭...");     // 关闭 websocket
+        };
+    }
+</script>
+</html>
