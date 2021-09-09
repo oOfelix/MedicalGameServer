@@ -87,7 +87,7 @@
     let vm = Vue.createApp(App).mount("#mess");
 
     function getUser() {
-      data = {
+      let data = {
         operationCode: 15,
       };
       $.ajax({
@@ -129,7 +129,7 @@
 	    return row;
 	}
 
-    var myChart = echarts.init(document.getElementById("chart"));
+    let myChart = echarts.init(document.getElementById("chart"));
     myChart.showLoading();
     myChart.setOption({
       title: {

@@ -9,5 +9,8 @@
         <module name="MedicalGame" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="MedicalGame" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

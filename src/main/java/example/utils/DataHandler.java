@@ -191,16 +191,6 @@ public class DataHandler{
      * operationCode
      * @author nicer
      */
-/*    public void dataRec(String ID, String Payload){
-        long getTime = System.currentTimeMillis();
-        String time = String.valueOf(getTime);
-        if(Payload.equals("-1") || Payload.equals(""))
-            return;
-        if(ID.equals("0x01") || ID.equals("0x02"))
-        {
-            HashData.addHash(ID,Payload,time);
-        }
-    }*/
     public void dataRec(String ID,String Payload){
         long getTime = System.currentTimeMillis();
         String time = String.valueOf(getTime);

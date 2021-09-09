@@ -3,10 +3,8 @@ package example.utils;
 import example.dao.UserDao;
 import example.domain.User;
 import org.apache.ibatis.session.SqlSession;
-
 import java.util.List;
 import java.util.Map;
-
 /**
  * 工具类
  * author felix
@@ -70,7 +68,6 @@ public class DBUtils {
             return userDao.getStatus(userName);
         }
     }
-
     public static List<Map<String,Object>> findAll() {
         try (SqlSession sqlSession = MybatisUtils.getSqlSession()) {
             UserDao userDao = sqlSession.getMapper(UserDao.class);

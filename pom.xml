@@ -7,7 +7,7 @@
   <groupId>com.example</groupId>
   <artifactId>MedicalGame</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>MedicalGameServer</name>
+  <name>MedicalGame</name>
   <packaging>war</packaging>
 
   <properties>

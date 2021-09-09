@@ -6,7 +6,8 @@ import example.utils.GetJsonObject;
 
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "OperationServlet", value = "/OperationServlet")
 public class OperationServlet extends HttpServlet {
@@ -27,7 +28,6 @@ public class OperationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //客户端
-        System.out.println();
         JSONObject jsonObject = new GetJsonObject().getObject(request, response);
         PrintWriter out = response.getWriter();
         DataHandler dataHandler = new DataHandler();
