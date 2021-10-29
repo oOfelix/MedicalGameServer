@@ -4,7 +4,7 @@ public class User {
     private String userName;
     private String password;
 
-    public User(){}   //不创建无参构造  反射找不到类
+    public User(){}
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;

@@ -15,5 +15,7 @@
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/OperationServlet</url-pattern>
         <url-pattern>/BackendServlet</url-pattern>
+        <url-pattern>*/OperationServlet</url-pattern>
+        <url-pattern>*</url-pattern>
     </filter-mapping>
 </web-app>

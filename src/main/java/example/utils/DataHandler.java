@@ -71,6 +71,11 @@ public class DataHandler{
             }
             long time = Long.parseLong(timePayload);
             if(time >= reqTime && time <= (reqTime + 12000)) {
+                JSONObject jo = new JSONObject();
+                jo.put("points",JSONObject.parseObject(getPoint(jsonObject)).getInteger("points")+10);
+                jo.put("userName",user.getUserName());
+                jo.put("password",user.getPassword());
+                savaPoint(jo);
                 return ("{\"state\":true,\"operationCode\":6,\"checkType\":\"" + key + "\",\"result\":\"" + field + "\",\"storyID\":" + storyID + "}");
             }
             else{
@@ -119,7 +124,7 @@ public class DataHandler{
         int points = DBUtils.getPoint(user.getUserName());
         int code = DBUtils.signIn(user);
         if(code == 0) {
-             return "{\"state\":true,\"operationCode\":10,\"point\":" + points + ",\"errorCode\":0,\"msg\":\"获取成功\"}";
+             return "{\"state\":true,\"operationCode\":10,\"points\":" + points + ",\"errorCode\":0,\"msg\":\"获取成功\"}";
         }
         else if(code == -1) {
             return "{\"state\":false,\"operationCode\":10,\"result\":-1,\"errorCode\":-1,\"errorMsg\":\"密码错误\"}";
@@ -141,6 +146,7 @@ public class DataHandler{
     public String savaStatus(JSONObject jsonObject){
         User user = new User(jsonObject.getString("userName"), jsonObject.getString("password"));
         String status = jsonObject.getString("status");
+        System.out.println("=====================" + status);
         int code = DBUtils.signIn(user);
         if(code == 0 && DBUtils.savaStatus(status,user.getUserName()) == 0) {
             return "{\"state\":true,\"operationCode\":12,\"msg\":\"录入成功\"}";
@@ -196,7 +202,7 @@ public class DataHandler{
         String time = String.valueOf(getTime);
         if(Payload.equals("-1") || Payload.equals(""))
             return;
-        if(ID.equals("0x01") || ID.equals("0x02") || ID.equals("0x03"))
+        if(ID.equals("0x01") || ID.equals("0x02") || ID.equals("0x03") || ID.equals("0x04"))
         {
             HashData.addHash(ID,Payload,time);
         }

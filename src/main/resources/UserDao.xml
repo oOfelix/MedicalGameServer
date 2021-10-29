@@ -21,7 +21,7 @@
     <update id="savePoints">
         update tb_progress set points = #{points} where userName = #{userName}
     </update>
-    <select id="getPoints">
+    <select id="getPoints" resultType="int">
         select points from tb_progress where userName = #{userName}
     </select>
     <update id="saveStatus">

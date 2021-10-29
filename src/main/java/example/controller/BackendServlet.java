@@ -16,12 +16,23 @@ public class BackendServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=utf-8");
-        //String res = HashData.getHashValue("0x03","ss");
+
+        //算法端脑电专注度数据
+//        String res = HashData.getHashValue("0x04","ss");
+//        assert res != null;
+//        String[] ret = res.split("-");
+//        JSONObject js = new JSONObject();
+//        js.put("concentration",ret[0]);
+//        js.put("brainWaves",ret[1]);
+//        PrintWriter out = response.getWriter();
+//        out.print(js);
+
+        //模拟
         JSONObject js = new JSONObject();
         int data = new Random().nextInt(101);
         int data2 = new Random().nextInt(101);
-        js.put("data",data);
-        js.put("data2",data2);
+        js.put("concentration",data);
+        js.put("brainWaves",data2);
         PrintWriter out = response.getWriter();
         out.print(js);
     }

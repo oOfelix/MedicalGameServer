@@ -26,7 +26,7 @@ public class GetJsonObject {
         while ((temp = bfr.readLine()) != null) {
             sb.append(temp);
         }
-        System.out.println("JSON:" + sb);
+//        System.out.println("JSON:" + sb);
         bfr.close();
         ior.close();
         ios.close();
