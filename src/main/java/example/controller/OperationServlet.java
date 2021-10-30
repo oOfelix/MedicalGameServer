@@ -12,7 +12,6 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.MessageFormat;
-import java.util.Random;
 
 @WebServlet(name = "OperationServlet", value = "/OperationServlet")
 public class OperationServlet extends HttpServlet {
@@ -105,7 +104,7 @@ public class OperationServlet extends HttpServlet {
                     res.put("userName",userName);
                 }
                 res.put("operationCode",18);
-                logger.info(userName);
+//                logger.info(userName);
                 out.print(res);
             }break;
             // 请求脑电数据信息
@@ -115,9 +114,16 @@ public class OperationServlet extends HttpServlet {
                 assert res != null;
                 String[] ret = res.split("-");
                 JSONObject js = new JSONObject();
-                js.put("concentration",ret[0]);
-                js.put("brainWaves",ret[1]);
+                if(Integer.parseInt(ret[0]) > 100){
+                    js.put("concentration","-1");
+                    js.put("brainWaves","-1");
+                }else{
+                    js.put("concentration",ret[0]);
+                    js.put("brainWaves",ret[1]);
+                }
+                js.put("state",true);
                 out.print(js);
+
 //                模拟
 //                JSONObject res = new JSONObject();
 //                int data = new Random().nextInt(101);

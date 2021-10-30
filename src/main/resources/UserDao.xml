@@ -16,7 +16,7 @@
         insert into tb_user(userName,password) values(#{userName},#{password})
     </insert>
     <insert id="addProgress">
-        insert into tb_progress(userName,points,status) values(#{userName},0,'')
+        insert into tb_progress(userName,points,status) values(#{userName},0,"{scene:0,story:3}")
     </insert>
     <update id="savePoints">
         update tb_progress set points = #{points} where userName = #{userName}

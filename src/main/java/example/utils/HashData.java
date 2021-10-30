@@ -22,7 +22,7 @@ public class HashData {
             }break;
             case "0x03":{
                 hash_0x03.add(field);
-                if (hash_0x03.size() >= 5){
+                if (hash_0x03.size() >= 10){
                     hash_0x03.poll();
                 }
             }
@@ -48,7 +48,7 @@ public class HashData {
                 }
             }break;
             case "0x03":{
-                if (hash_0x03.size() == 0) return "0-0";
+                if (hash_0x03.isEmpty()) return "1000-1000";
                 else return hash_0x03.poll();
             }
             default:break;

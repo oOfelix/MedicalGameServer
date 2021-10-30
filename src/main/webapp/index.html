@@ -55,7 +55,6 @@
 <script>
   // let serIP = "42.193.4.130"
   let serIP = "localhost"
-  
   let vm = new Vue({
     el: '#mess',
     data: {
@@ -110,6 +109,7 @@
             if (res[i].status === undefined || res[i].status.trim() === "") {
               res[i].status = "暂无进度";
             } else {
+              console.log(res[i].status);
               let temp = JSON.parse(res[i].status);
               if (temp.scene === 0)
                 res[i].status = "主场景-" + temp.story;
