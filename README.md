@@ -1,3 +1,4 @@
+```
 client
 事件 1 注册
 数据格式
@@ -270,3 +271,4 @@ server
 事件 get 接收算法得到的数据
 url ID:xxx&Payload:xxx
 
+```
