@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite::resource:db/MedicalGame-sqlite3.db
+    username:
+    password:
+
+mybatis:
+  type-aliases-package: org.northwest.newserver.pojo
+server:
+  port: 8080
+#  servlet:
+#    context-path: "/MedicalGame"
