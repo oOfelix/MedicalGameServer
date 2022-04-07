@@ -8,6 +8,6 @@ spring:
 mybatis:
   type-aliases-package: org.northwest.newserver.pojo
 server:
-  port: 8080
+  port: 8081
 #  servlet:
 #    context-path: "/MedicalGame"
