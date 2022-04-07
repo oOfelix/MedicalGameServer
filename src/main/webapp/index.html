@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="utf-8"/>
+  <link rel="stylesheet" type="text/css" href="./css/global.css"/>
+  <title>后台</title>
+</head>
+
+<body>
+<div id="header">
+  <h1>MedicalGame BackStage</h1>
+</div>
+
+<div id="section">
+  <div class="info_left" style="width: 50%; height: 100%; float: left;">
+    <div class="user_info" style="position: relative; left: 50%;transform: translateX(-50%);">
+      <div class="toux"><img src="./img/pic.png" alt="null"/></div>
+      <div class="userName">用户</div>
+      <div class="account_pwd">
+        <div class="account" id="mess">账号:{{account}}</div>
+        <div>密码:******</div>
+      </div>
+    </div>
+    <div id="chart" class="chart-container"></div>
+  </div>
+  
+  <div id="info_right" style="float: right; width: 50%;">
+    <table border="1px" cellspacing="0"
+           style="position: relative; margin-top: 100px; width: 50%; height: 500px; left:100px;">
+      <thead>
+      <tr>
+        <th>账号</th>
+        <th>密码</th>
+        <th>积分</th>
+        <th>状态</th>
+      </tr>
+      </thead>
+      <tbody id="tbMain">
+      <tr v-for="user in users" style="text-align: center;">
+        <td>{{user.userName}}</td>
+        <td>{{user.password}}</td>
+        <td>{{user.points}}</td>
+        <td>{{user.status}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="footer">made by nwu</div>
+<script src="./js/jquery-3.6.0.min.js"></script>
+<script src="./js/echarts.min.js"></script>
+<script src="./js/vue.min.js"></script>
+<script>
+  // let serIP = "42.193.4.130"
+  let serIP = "localhost"
+  let vm = new Vue({
+    el: '#mess',
+    data: {
+      account: "VueTest",
+    },
+    methods: {
+      getUser() {
+        $.ajax({
+          type: "post",
+          url: "http://" + serIP + ":8080/MedicalGame/OperationServlet",
+          data: JSON.stringify({
+            operationCode: 17
+          }),
+          contentType: "application/json;charset=utf-8",
+          dataType: "json",
+          success: function (res) {
+            vm.account = res.userName;
+            setTimeout(function () {
+              vm.getUser();
+            },200)
+          },
+          error: function () {
+            alert("数据丢失 vue");
+          },
+        })
+      }
+    },
+    mounted() {
+      this.getUser();
+    }
+  });
+  
+  const vm2 = new Vue({
+    el: '#tbMain',
+    data: {
+      users: {},
+      name: 'felix',
+      password: "124",
+    },
+    created() {
+      let req = {
+        operationCode: 15,
+      }
+      $.ajax({
+        type: "post",
+        url: "http://" + serIP + ":8080/MedicalGame/OperationServlet",
+        data: JSON.stringify(req),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (res) {
+          for (let i = 0; i < res.length; i++) {
+            if (res[i].status === undefined || res[i].status.trim() === "") {
+              res[i].status = "暂无进度";
+            } else {
+              console.log(res[i].status);
+              let temp = JSON.parse(res[i].status);
+              if (temp.scene === 0)
+                res[i].status = "主场景-" + temp.story;
+              else if (temp.scene === 1)
+                res[i].status = "超市-" + temp.story;
+              else if (temp.scene === 2)
+                res[i].status = "幼儿园-" + temp.story;
+              else if (temp.scene === 3)
+                res[i].status = "公园-" + temp.story;
+            }
+          }
+          vm2.users = res;
+        },
+        error: function () {
+          alert("数据丢失");
+        },
+      });
+    }
+  })
+  
+  let myChart = echarts.init(document.getElementById("chart"));
+  myChart.showLoading();
+  let concentrateData = new Array(100).fill(0);
+  let brainWavesData = new Array(100).fill(0);
+  let xdata = new Array(100).fill(0);
+  myChart.setOption({
+    title: {
+      text: "脑电数据",
+    },
+    tooltip: {},
+    legend: {
+      data: ["专注度", "脑电波"],
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: xdata,
+    },
+    yAxis: {
+      type: 'value',
+      interval: 5,
+      min: 0,
+      max: 100,
+    },
+    series: [{
+      name: "专注度",
+      type: "line",
+      data: concentrateData,
+    },
+      {
+        name: "脑电波",
+        type: "line",
+        data: brainWavesData,
+      }
+    ],
+  });
+  window.onload = function () {
+    myChart.hideLoading();
+    getApi();
+  };
+  
+  function getApi() {
+    let req = {
+      operationCode: 19
+    }
+    $.ajax({
+      type: "post",
+      url: "http://" + serIP + ":8080/MedicalGame/OperationServlet",
+      data: JSON.stringify(req),
+      contentType: "application/json;charset=utf-8",
+      dataType: "json",
+      success: function (res) {
+        brainWavesData.push(res.brainWaves);
+        brainWavesData.shift();
+        concentrateData.push(res.concentration);
+        concentrateData.shift();
+        xdata.push((xdata[xdata.length - 1] + 1) % 200);
+        xdata.shift();
+        myChart.setOption({
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: xdata,
+          },
+          series: [{
+            name: "专注度",
+            type: "line",
+            data: concentrateData,
+          },
+            {
+              name: "脑电波",
+              type: "line",
+              data: brainWavesData,
+            }
+          ],
+        });
+        setTimeout(function () {
+          getApi();
+        }, 200)
+      }
+    })
+  }
+  
+  
+  // function getApi() {
+  //
+  //   $.post("http://" + serIP + ":8080/MedicalGame/OperationServlet", JSON.stringify({
+  //     operationCode: 19
+  //   })).done(function (
+  //       res
+  //   ) {
+  //     // 填入数据
+  //     // console.log(res);
+  //     brainWavesData.push(res.brainWaves);
+  //     brainWavesData.shift();
+  //     concentrateData.push(res.concentration);
+  //     concentrateData.shift();
+  //     xdata.push((xdata[xdata.length - 1] + 1) % 200);
+  //     xdata.shift();
+  //     myChart.setOption({
+  //       xAxis: {
+  //         type: 'category',
+  //         boundaryGap: false,
+  //         data: xdata,
+  //       },
+  //       series: [{
+  //         name: "专注度",
+  //         type: "line",
+  //         data: concentrateData,
+  //       },
+  //         {
+  //           name: "脑电波",
+  //           type: "line",
+  //           data: brainWavesData,
+  //         }
+  //       ],
+  //     });
+  //   });
+  //
+  //   setTimeout(function () {
+  //     getApi();
+  //   }, 200);
+  // }
+</script>
+</body>
+
+</html>
